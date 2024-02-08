@@ -1,0 +1,14 @@
+"C:\Users\brier\CLion 2022.3.1\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Users/brier/CLion 2022.3.1/bin/ninja/win/x64/ninja.exe" -G Ninja -S C:\Users\brier\OpenSourceContributions\polybar -B C:\Users\brier\OpenSourceContributions\polybar\cmake-build-debug
+-- The CXX compiler identification is GNU 7.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: C:/mingw64/bin/c++.exe - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Could not detect version with git, falling back to built-in version information.
+CMake Error at doc/CMakeLists.txt:7 (message):
+  sphinx-build executable 'sphinx-build' not found.
+
+
+-- Configuring incomplete, errors occurred!
+See also "C:/Users/brier/OpenSourceContributions/polybar/cmake-build-debug/CMakeFiles/CMakeOutput.log".

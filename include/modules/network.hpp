@@ -23,6 +23,7 @@ namespace modules {
 
    protected:
     void subthread_routine();
+    string get_blob_value(const string& blob) const;
 
    private:
     static constexpr auto FORMAT_CONNECTED = "format-connected";

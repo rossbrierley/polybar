@@ -15,6 +15,18 @@ namespace modules {
     // Load configuration values
     m_interface = m_conf.get(name(), "interface", m_interface);
 
+    // Step 1: Allow dynamic network naming with blobs
+    size_t blobStart = m_interface.find("%{");
+    size_t blobEnd = m_interface.find("}");
+    while (blobStart != std::string::npos && blobEnd != std::string::npos) {
+      std::string blob = m_interface.substr(blobStart, blobEnd - blobStart + 1);
+      // Replace the blob with the actual value
+      m_interface.replace(blobStart, blob.length(), get_blob_value(blob));
+      // Find the next blob
+      blobStart = m_interface.find("%{", blobStart + 1);
+      blobEnd = m_interface.find("}", blobStart + 1);
+    }
+
     if (m_interface.empty()) {
       std::string type = m_conf.get(name(), "interface-type");
       if (type == "wired") {
@@ -97,20 +109,34 @@ namespace modules {
       }
     }
 
-    // Get an intstance of the network interface
+    // Get an instance of the network interface
     if (net::is_wireless_interface(m_interface)) {
       m_wireless = std::make_unique<net::wireless_network>(m_interface);
       m_wireless->set_unknown_up(m_unknown_up);
     } else {
       m_wired = std::make_unique<net::wired_network>(m_interface);
       m_wired->set_unknown_up(m_unknown_up);
-    };
+    }
 
     // We only need to start the subthread if the packetloss animation is used
     if (m_animation_packetloss) {
       m_threads.emplace_back(thread(&network_module::subthread_routine, this));
     }
   }
+}
+
+  string network_module::get_blob_value(const string& blob) const {
+
+    if(blob == "%{NETWORK_INTERFACE}") {
+      return m_interface;
+    }
+    // we can add more blob patterns here
+
+    else {
+      return "No matching network configuration.";
+    }
+  }
+
 
   void network_module::teardown() {
     m_wireless.reset();
